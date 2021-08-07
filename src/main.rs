@@ -11,7 +11,7 @@ fn get_right_child_index(parent_index: usize) -> usize {
     2 * parent_index + 2
 }
 fn get_parent_index(child_index: usize) -> Option<usize> {
-    match child_index.checked_sub(2) {
+    match child_index.checked_sub(1) {
         Some(x) => x.checked_div(2),
         None => None,
     }
@@ -98,7 +98,16 @@ fn add(item: i32, capacity: &mut usize, items: &mut Vec<i32>, size: &mut usize) 
 
 fn heapify_up(items: &mut Vec<i32>, size: &mut usize) {
     let mut i = *size - 1;
-    while has_parent(i) && parent(i, &items) > Some(items[i]) {
+
+    while has_parent(i) && (parent(i, &items) > Some(items[i])) {
+        println!(
+            "IN HEAP UP - items: {:?}, the size: {}, the i: {}, the el: {}, the parent: {:?}",
+            items,
+            size,
+            i,
+            items[i],
+            parent(i, items)
+        );
         swap(get_parent_index(i).unwrap(), i, items);
         if let Some(par_i) = get_parent_index(i) {
             i = par_i
@@ -113,29 +122,31 @@ fn main() {
     let mut items: Vec<i32> = Vec::with_capacity(capacity);
     let mut size = 0;
 
-    println!("items: {:?}, capacity: {}", items, capacity);
+    println!("items: {:?}, capacity: {}, size {}", items, capacity, size);
     add(4, &mut capacity, &mut items, &mut size);
-    println!("items: {:?}, capacity: {}", items, capacity);
+    println!("items: {:?}, capacity: {}, size {}", items, capacity, size);
     add(7, &mut capacity, &mut items, &mut size);
-    println!("items: {:?}, capacity: {}", items, capacity);
+    println!("items: {:?}, capacity: {}, size {}", items, capacity, size);
     add(3, &mut capacity, &mut items, &mut size);
-    println!("items: {:?}, capacity: {}", items, capacity);
+    println!("items: {:?}, capacity: {}, size {}", items, capacity, size);
     add(6, &mut capacity, &mut items, &mut size);
-    println!("items: {:?}, capacity: {}", items, capacity);
+    println!("items: {:?}, capacity: {}, size {}", items, capacity, size);
     add(5, &mut capacity, &mut items, &mut size);
-    println!("items: {:?}, capacity: {}", items, capacity);
+    println!("items: {:?}, capacity: {}, size {}", items, capacity, size);
     add(2, &mut capacity, &mut items, &mut size);
-    println!("items: {:?}, capacity: {}", items, capacity);
+    println!("items: {:?}, capacity: {}, size {}", items, capacity, size);
     add(1, &mut capacity, &mut items, &mut size);
-    println!("items: {:?}, capacity: {}", items, capacity);
+    println!("items: {:?}, capacity: {}, size {}", items, capacity, size);
 
-    let other_capacity = 5;
+    println!("IS OTHER NOW");
+
+    let mut other_capacity = 5;
     let mut other_items: Vec<i32> = Vec::with_capacity(other_capacity);
-    let mut these_items: Vec<i32> = vec![10, 15, 20, 17, 25];
-    let mut other_size = 5;
+    let mut these_items: Vec<i32> = vec![10, 15, 20, 17];
+    let mut other_size = 4;
     other_items.append(&mut these_items);
 
-    poll(&mut other_items, &mut other_size);
+    add(8, &mut other_capacity, &mut other_items, &mut other_size);
     println!(
         "Other items: {:?}, Other size: {:?}",
         other_items, other_size
